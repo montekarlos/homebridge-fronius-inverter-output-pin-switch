@@ -1,0 +1,56 @@
+{
+  "pluginAlias": "homebridge-fronius-inverter-output-pin-switch.HomebridgeFroniusInverterLoadSwitchPlugin",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "inverterIp": {
+        "title": "Host name / Ip Address",
+        "type": "string",
+        "required": true,
+        "description": "The host name of the fronius inverter to connect to"
+      },
+      "userName": {
+        "title": "User Name",
+        "type": "string",
+        "required": true,
+        "default": "admin"
+      },
+      "password": {
+        "title": "Password",
+        "type": "string",
+        "required": true
+      },
+      "gpioPins": {
+        "type": "array",
+        "items": {
+          "title": "GPIO Pin",
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string",
+              "required": true,
+              "default": "Pin Numero Uno"
+            },
+            "pin": {
+              "title": "GPIO Pin To Control",
+              "type": "string",
+              "required": true,
+              "default": "pin1",
+              "description": "One of pin1, pin2, pin3 etc"
+            },
+            "timeoutHours": {
+              "title": "Boost timeout in hours",
+              "type": "string",
+              "required": true,
+              "default": "4",
+              "description": "Automatically disable boost after this many hours. 0 for infinite"
+            }
+          }
+        }
+      }
+    }
+  }
+}
