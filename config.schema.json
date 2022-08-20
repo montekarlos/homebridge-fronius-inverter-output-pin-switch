@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "homebridge-fronius-inverter-output-pin-switch.HomebridgeFroniusInverterOutputPinPlugin",
+  "pluginAlias": "FroniusInverterOutputPinPlugin",
   "pluginType": "platform",
   "singular": true,
   "schema": {
