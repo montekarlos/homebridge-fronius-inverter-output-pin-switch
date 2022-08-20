@@ -24,14 +24,11 @@ export class FroniusInverterHomebridgePlatform implements DynamicPlatformPlugin 
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
-    this.log.debug('Finished initializing platform:', this.config.name);
-
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
     // to start discovery of new accessories.
     this.api.on('didFinishLaunching', () => {
-      log.debug('Executed didFinishLaunching callback');
       // run the method to discover / register your devices as accessories
       this.discoverDevices();
     });
@@ -56,38 +53,18 @@ export class FroniusInverterHomebridgePlatform implements DynamicPlatformPlugin 
   async discoverDevices() {
 
     if (this.config.inverterIp === undefined) {
-      this.log.error('Needs config');
+      this.log.error('Required inverter ip in configuration to continue');
       return;
     }
-
-    this.log.info(`CONFIG:: ${JSON.stringify(this.config)}`);
-
 
     const fronius = new FroniusInverter(this.log, this.config.inverterIp, this.config.userName,
       this.config.password);
 
-    //const result = await fronius.get(uri);
-    //this.log.info(`Config: ${JSON.stringify(await fronius.getEmrsConfig())}`);
-    //this.log.info(`Status Configured Pin: ${JSON.stringify(await fronius.getPinStatus())}`);
-    //this.log.info(`Config Configured Pin: ${JSON.stringify(await fronius.getPinConfig())}`);
-
     const about = await fronius.getAboutSystem();
     this.log.info(`Connected to ${this.config.inverterIp} hardware revision ${about.txtHwVersion} running firmware v${about.txtSwVersion}`);
 
-    //this.log.info(`NORMAL ON WATTS: ${NORMAL_ON_WATTS}`);
-
-    //this.log.info(`Config Configured Pin: ${JSON.stringify(await fronius.getPinConfig())}`);
-    //this.log.info(`About: ${JSON.stringify(await fronius.getAboutSystem(), null, 4)}`);
-    //await fronius.setPinNormalConfig();
-    //this.log.info(`Config Configured Pin: ${JSON.stringify(await fronius.getPinConfig())}`);
-
-    //this.log.info(`GPIO: ${JSON.stringify(await fronius.getPinConfig())}`);
-
     for (const gpioPin of this.config.gpioPins) {
 
-      // EXAMPLE ONLY
-      // A real plugin you would discover accessories from the local network, cloud services
-      // or a user-defined array in the platform config.
       const inverterConfig =
       {
         inverterIp: this.config.inverterIp,
@@ -98,9 +75,7 @@ export class FroniusInverterHomebridgePlatform implements DynamicPlatformPlugin 
         timeoutHours: gpioPin.timeoutHours,
       };
 
-      // generate a unique id for the accessory this should be generated from
-      // something globally unique, but constant, for example, the device serial
-      // number or MAC address
+      // generate a unique id for the accessory
       const uuid = this.api.hap.uuid.generate(about.txtLanMac + '_' + about.txtWlanMac + '_' + gpioPin.pin);
 
       // see if an accessory with the same uuid has already been registered and restored from
@@ -111,18 +86,10 @@ export class FroniusInverterHomebridgePlatform implements DynamicPlatformPlugin 
         // the accessory already exists
         this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
 
-        // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
-        // existingAccessory.context.device = device;
-        // this.api.updatePlatformAccessories([existingAccessory]);
-
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
         new FroniousInverterPlatformOutputPinAccessory(this, existingAccessory);
 
-        // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
-        // remove platform accessories when no longer present
-        // this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
-        // this.log.info('Removing existing accessory from cache:', existingAccessory.displayName);
       } else {
         // the accessory does not yet exist, so we need to create it
         this.log.info('Adding new accessory: ', gpioPin.name, ' connected to ', gpioPin.pin);
