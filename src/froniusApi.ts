@@ -17,7 +17,7 @@ export interface FroniusHeader {
 }
 
 /**
- * Top level response type. Not used for all responses! 
+ * Top level response type. Not used for all responses!
  * T can be one of EmrsStatus or EmrsConfigStatus
  */
 export interface FroniusJson<T> {

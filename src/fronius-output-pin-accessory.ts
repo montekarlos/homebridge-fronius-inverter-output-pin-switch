@@ -84,6 +84,7 @@ export class FroniousInverterPlatformOutputPinAccessory {
 
       const millisecondsInDay = 60 * 60 * 24 * 1000;
       if (Date.now() % millisecondsInDay < this.accessory.context.device.LastUpdate % millisecondsInDay ||
+          // eslint-disable-next-line eqeqeq
           this.accessory.context.device.OnTimeMinutes == null) {
         // has wrapped around or never initialised
         this.accessory.context.device.OnTimeMinutes = 0;

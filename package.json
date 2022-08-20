@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "displayName": "Fronius Inverter Output Pin Switch",
   "name": "homebridge-fronius-inverter-output-pin-switch",
   "version": "1.0.0",
