@@ -2,7 +2,7 @@
   "private": false,
   "displayName": "Fronius Inverter Output Pin Switch",
   "name": "homebridge-fronius-inverter-output-pin-switch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Allow manual control of fronius inverter output pins switch.",
   "license": "Apache-2.0",
   "repository": {

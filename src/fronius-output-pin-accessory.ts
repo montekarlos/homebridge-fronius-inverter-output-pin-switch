@@ -83,14 +83,17 @@ export class FroniousInverterPlatformOutputPinAccessory {
       }
 
       const millisecondsInDay = 60 * 60 * 24 * 1000;
-      if (Date.now() % millisecondsInDay < this.accessory.context.device.LastUpdate % millisecondsInDay ||
+      // Get total milliseconds since epoch in LOCAL time
+      const totalMillisecondsLocalTime = (Date.now()) - (60 * new Date().getTimezoneOffset());
+      if (totalMillisecondsLocalTime % millisecondsInDay <
+            this.accessory.context.device.LastUpdate % millisecondsInDay ||
           // eslint-disable-next-line eqeqeq
           this.accessory.context.device.OnTimeMinutes == null) {
-        // has wrapped around or never initialised
+        // has wrapped around (at midnight) or never initialised
         this.accessory.context.device.OnTimeMinutes = 0;
       }
 
-      this.accessory.context.device.LastUpdate = Date.now();
+      this.accessory.context.device.LastUpdate = totalMillisecondsLocalTime;
 
       this.platform.log.debug('Boost On:', isBoostOn + ', Pin On:', pinStatus.state);
     } catch {
