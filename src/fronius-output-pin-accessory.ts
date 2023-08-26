@@ -91,6 +91,7 @@ export class FroniousInverterPlatformOutputPinAccessory {
           this.accessory.context.device.OnTimeMinutes == null) {
         // has wrapped around (at midnight) or never initialised
         this.accessory.context.device.OnTimeMinutes = 0;
+        this.platform.log.debug('Reset pin on time minutes to zero');
       }
 
       this.accessory.context.device.LastUpdate = totalMillisecondsLocalTime;
