@@ -84,7 +84,7 @@ export class FroniousInverterPlatformOutputPinAccessory {
 
       const millisecondsInDay = 60 * 60 * 24 * 1000;
       // Get total milliseconds since epoch in LOCAL time
-      const totalMillisecondsLocalTime = (Date.now()) - (60 * new Date().getTimezoneOffset());
+      const totalMillisecondsLocalTime = (Date.now()) - (60 * 1000 * new Date().getTimezoneOffset());
       if (totalMillisecondsLocalTime % millisecondsInDay <
             this.accessory.context.device.LastUpdate % millisecondsInDay ||
           // eslint-disable-next-line eqeqeq
